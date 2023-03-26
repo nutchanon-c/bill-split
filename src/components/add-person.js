@@ -3,8 +3,9 @@ export const AddPersonForm = (props) => {
   const [name, setName] = useState("");
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    if (name) {
-      props.addPerson(name);
+
+    const res = props.addPerson(name);
+    if (res) {
       setName("");
     }
   };
@@ -23,7 +24,12 @@ export const AddPersonForm = (props) => {
           value={name}
           onChange={handleOnChange}
         />
-        <button type="submit">Add</button>
+        <button
+          type="submit"
+          className="border-2 border-white rounded-lg px-4 py-1 ml-2"
+        >
+          Add
+        </button>
       </form>
     </div>
   );

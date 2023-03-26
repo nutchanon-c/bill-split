@@ -4,10 +4,13 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { AddPerson as AddItemForm } from "@/components/add-item";
 import { Item } from "@/components/item";
+import { NextButton } from "@/components/next-button";
+import Footer from "@/components/footer";
 
 export default function Home() {
   const router = useRouter();
   const [items, setItems] = useState([]);
+  const [vatAmount, setVatAmount] = useState(0);
 
   useEffect(() => {
     const localStorageItems = localStorage.getItem("items");
@@ -28,7 +31,19 @@ export default function Home() {
     localStorage.setItem("items", JSON.stringify(newItems));
   };
   const handleNext = () => {
+    if (items.length === 0) {
+      alert("Add at least one item");
+      return;
+    }
     router.push("/people");
+  };
+  const handleClearItems = () => {
+    setItems([]);
+    localStorage.removeItem("items");
+  };
+  const handleVatChange = (e) => {
+    setVatAmount(parseFloat(e.target.value));
+    localStorage.setItem("vat", parseFloat(e.target.value));
   };
   return (
     <>
@@ -39,9 +54,19 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="p-10 flex flex-col justify-center items-center h-screen w-screen">
-        <div className="text-2xl font-bold">Bill Split</div>
+        <div className="text-2xl font-bold my-4">Items</div>
+        <div className="flex flex-row items-center space-x-4 my-3">
+          <p>VAT Amount (THB): </p>
+          <input
+            type="number"
+            value={vatAmount}
+            onChange={handleVatChange}
+            className="px-3 py-2"
+          />
+        </div>
         <div className="flex flex-col">
           <AddItemForm onAddItem={handleAddItem} />
+
           <div className="flex flex-col mt-10">
             {items &&
               items.map((item, index) => {
@@ -55,13 +80,14 @@ export default function Home() {
                 );
               })}
           </div>
+          {items.length > 0 ? (
+            <button onClick={handleClearItems} className="text-red-500 my-5">
+              Clear All Items
+            </button>
+          ) : null}
         </div>
-        <button
-          onClick={handleNext}
-          className="bg-blue-50 text-black w-20 h-10 rounded-lg"
-        >
-          {"Next >"}
-        </button>
+        <NextButton onPressed={handleNext} />
+        <Footer />
       </div>
     </>
   );

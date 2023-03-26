@@ -26,22 +26,32 @@ export const AddPerson = (props) => {
   };
   return (
     <div className="flex flex-col space-y-3">
-      <input
-        type="text"
-        className="px-5 py-2"
-        onChange={onTextChange}
-        value={name}
-        id="name"
-        placeholder={"Name"}
-      />
-      <input
-        type="number"
-        className="px-5 py-2"
-        onChange={onTextChange}
-        value={price}
-        id="price"
-        placeholder={"Price"}
-      />
+      <div className="flex flex-row items-center">
+        <div className="w-12">
+          <label for="name">Name:</label>
+        </div>
+        <input
+          type="text"
+          className="px-5 py-2"
+          onChange={onTextChange}
+          value={name}
+          id="name"
+          placeholder={"Name"}
+        />
+      </div>
+      <div className="flex flex-row items-center">
+        <div className="w-12">
+          <label for="price">Price: </label>
+        </div>
+        <input
+          type="number"
+          className="px-5 py-2"
+          onChange={onTextChange}
+          value={price}
+          id="price"
+          placeholder={"Price"}
+        />
+      </div>
       <button
         onClick={handleSubmit}
         className="border-white border-2 rounded-lg"
