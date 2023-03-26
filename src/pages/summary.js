@@ -6,24 +6,31 @@ export default function Summary() {
   const [items, setItems] = useState([]);
   const [people, setPeople] = useState([]);
   const [vat, setVat] = useState(0);
+  const [sc, setSc] = useState(0);
   const router = useRouter();
   const itemConsumptionCount = {};
 
   useEffect(() => {
     const localStorageItems = localStorage.getItem("items");
+    const localStoragePeople = localStorage.getItem("people");
+    const localStorageVat = localStorage.getItem("vat");
+    const localStorageSc = localStorage.getItem("serviceCharge");
 
     if (localStorageItems) {
       setItems(JSON.parse(localStorageItems));
     }
-    const localStoragePeople = localStorage.getItem("people");
     if (localStoragePeople) {
       setPeople(JSON.parse(localStoragePeople));
     }
-    const localStorageVat = localStorage.getItem("vat");
     if (localStorageVat && localStorageVat !== "NaN") {
       setVat(localStorageVat);
     } else {
       setVat(0);
+    }
+    if (localStorageSc && localStorageSc !== "NaN") {
+      setSc(localStorageSc);
+    } else {
+      setSc(0);
     }
   }, []);
 
@@ -65,13 +72,15 @@ export default function Summary() {
             </p>
           </div>
           <div className="flex flex-row justify-between w-full">
-            <p>Total Price (+VAT): </p>
+            <p>Total Price (+ VAT + SC): </p>
             <p className="text-blue-500">
               {parseFloat(
                 items.reduce((accumulator, item) => {
                   return accumulator + item.price;
                 }, 0)
-              ) + parseFloat(vat)}
+              ) +
+                parseFloat(vat) +
+                parseFloat(sc)}
               THB
             </p>
           </div>
@@ -79,6 +88,13 @@ export default function Summary() {
             <p>VAT/person: </p>
             <p className="text-blue-500">
               {parseFloat(vat) / people.length}
+              THB
+            </p>
+          </div>
+          <div className="flex flex-row justify-between w-full">
+            <p>SC/person: </p>
+            <p className="text-blue-500">
+              {parseFloat(sc) / people.length}
               THB
             </p>
           </div>
@@ -93,7 +109,7 @@ export default function Summary() {
                 Items Price
               </th>
               <th className="border px-4 py-2 text-left text-xs">
-                Total Price (VAT included)
+                Total Price (+ VAT +SC)
               </th>
             </tr>
           </thead>
@@ -120,11 +136,11 @@ export default function Summary() {
                     {parseFloat(totalPrice).toFixed(2)}
                   </td>
                   <td className="border px-4 py-2 text-green-300">
-                    {vat === 0
-                      ? "no"
-                      : (parseFloat(totalPrice) + vat / people.length).toFixed(
-                          2
-                        )}
+                    {(
+                      parseFloat(totalPrice) +
+                      vat / people.length +
+                      sc / people.length
+                    ).toFixed(2)}
                   </td>
                 </tr>
               );

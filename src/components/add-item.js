@@ -28,7 +28,7 @@ export const AddPerson = (props) => {
     <div className="flex flex-col space-y-3">
       <div className="flex flex-row items-center">
         <div className="w-12">
-          <label for="name">Name:</label>
+          <label htmlFor="name">Name:</label>
         </div>
         <input
           type="text"
@@ -41,7 +41,7 @@ export const AddPerson = (props) => {
       </div>
       <div className="flex flex-row items-center">
         <div className="w-12">
-          <label for="price">Price: </label>
+          <label htmlFor="price">Price: </label>
         </div>
         <input
           type="number"

@@ -11,6 +11,7 @@ export default function Home() {
   const router = useRouter();
   const [items, setItems] = useState([]);
   const [vatAmount, setVatAmount] = useState(0);
+  const [scAmount, setScAmount] = useState(0);
 
   useEffect(() => {
     const localStorageItems = localStorage.getItem("items");
@@ -45,6 +46,10 @@ export default function Home() {
     setVatAmount(parseFloat(e.target.value));
     localStorage.setItem("vat", parseFloat(e.target.value));
   };
+  const handleScChange = (e) => {
+    setScAmount(parseFloat(e.target.value));
+    localStorage.setItem("serviceCharge", parseFloat(e.target.value));
+  };
   return (
     <>
       <Head>
@@ -56,11 +61,20 @@ export default function Home() {
       <div className="p-10 flex flex-col justify-center items-center h-screen w-screen">
         <div className="text-2xl font-bold my-4">Items</div>
         <div className="flex flex-row items-center space-x-4 my-3">
-          <p>VAT Amount (THB): </p>
+          <p>VAT (THB): </p>
           <input
             type="number"
             value={vatAmount}
             onChange={handleVatChange}
+            className="px-3 py-2"
+          />
+        </div>
+        <div className="flex flex-row items-center space-x-4 my-3">
+          <p>Service Charge(THB): </p>
+          <input
+            type="number"
+            value={scAmount}
+            onChange={handleScChange}
             className="px-3 py-2"
           />
         </div>
